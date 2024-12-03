@@ -1,0 +1,27 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main-component {
+    flex: 1;
+}
+
+.footer {
+    background-color: #f1f1f1; 
+    padding: 10px;
+    text-align: center;
+}
