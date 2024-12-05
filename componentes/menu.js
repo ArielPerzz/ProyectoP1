@@ -19,9 +19,9 @@ class MenuComponent extends HTMLElement {
             </style>
             <nav>
                 <a id="home-link">Home</a>
-                <a id="profile-link">Profile</a>
-                <a id="table-link">Table</a>
-                <a id="gallery-link">Gallery</a>
+                <a id="profile-link"></a>
+                <a id="table-link"></a>
+                <a id="gallery-link"></a>
             </nav>
         `;
         shadow.appendChild(template.content.cloneNode(true));

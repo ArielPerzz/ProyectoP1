@@ -41,7 +41,127 @@ db.connect((err) => {
     }
     console.log('Mysql conectado');
 });
+//////////////////////////////////////////////
+// Crear un nuevo usuario
+app.post('/usuarios', (req, res) => {
+    const { nombre, correo } = req.body;
+    const query = 'INSERT INTO Usuarios (nombre, correo) VALUES (?, ?)';
+    db.query(query, [nombre, correo], (error, results) => {
+        if (error) {
+            res.status(500).send('Error al crear el usuario');
+            return;
+        }
+        res.status(200).json('Usuario creado exitosamente');
+    });
+});
+// Obtener todos los usuarios
+app.get('/usuarios', (req, res) => {
+    const query = 'SELECT * FROM Usuarios';
+    db.query(query, (error, results) => {
+        if (error) {
+            res.status(500).send('Error al obtener los usuarios');
+            return;
+        }
+        res.status(200).json(results);
+    });
+});
+// Eliminar un usuario
+app.delete('/usuarios/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'DELETE FROM Usuarios WHERE id_usuario = ?';
+    db.query(query, [id], (error, results) => {
+        if (error) {
+            res.status(500).send('Error al eliminar el usuario');
+            return;
+        }
+        if (results.affectedRows === 0) {
+            res.status(404).send('Usuario no encontrado');
+            return;
+        }
+        res.status(200).json('Usuario eliminado exitosamente');
+    });
+});
 
+//////////////////////////////////////////////
+// Crear un nuevo destino
+app.post('/destinos', (req, res) => {
+    const { nombre, ubicacion } = req.body;
+    const query = 'INSERT INTO Destinos (nombre, ubicacion) VALUES (?, ?)';
+    db.query(query, [nombre, ubicacion], (error, results) => {
+        if (error) {
+            res.status(500).send('Error al crear el destino');
+            return;
+        }
+        res.status(200).json('Destino creado exitosamente');
+    });
+});
+// Obtener todos los destinos
+app.get('/destinos', (req, res) => {
+    const query = 'SELECT * FROM Destinos';
+    db.query(query, (error, results) => {
+        if (error) {
+            res.status(500).send('Error al obtener los destinos');
+            return;
+        }
+        res.status(200).json(results);
+    });
+});
+// Eliminar un destino
+app.delete('/destinos/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'DELETE FROM Destinos WHERE id_destino = ?';
+    db.query(query, [id], (error, results) => {
+        if (error) {
+            res.status(500).send('Error al eliminar el destino');
+            return;
+        }
+        if (results.affectedRows === 0) {
+            res.status(404).send('Destino no encontrado');
+            return;
+        }
+        res.status(200).json('Destino eliminado exitosamente');
+    });
+});
+// Crear un nuevo favorito
+app.post('/favoritos', (req, res) => {
+    const { id_usuario, id_destino } = req.body;
+    const query = 'INSERT INTO Favoritos (id_usuario, id_destino) VALUES (?, ?)';
+    db.query(query, [id_usuario, id_destino], (error, results) => {
+        if (error) {
+            res.status(500).send('Error al crear el favorito');
+            return;
+        }
+        res.status(200).json('Favorito creado exitosamente');
+    });
+});
+// Obtener todos los favoritos
+app.get('/favoritos', (req, res) => {
+    const query = 'SELECT * FROM Favoritos';
+    db.query(query, (error, results) => {
+        if (error) {
+            res.status(500).send('Error al obtener los favoritos');
+            return;
+        }
+        res.status(200).json(results);
+    });
+});
+// Eliminar un favorito
+app.delete('/favoritos', (req, res) => {
+    const { id_usuario, id_destino } = req.body;
+    const query = 'DELETE FROM Favoritos WHERE id_usuario = ? AND id_destino = ?';
+    db.query(query, [id_usuario, id_destino], (error, results) => {
+        if (error) {
+            res.status(500).send('Error al eliminar el favorito');
+            return;
+        }
+        if (results.affectedRows === 0) {
+            res.status(404).send('Favorito no encontrado');
+            return;
+        }
+        res.status(200).json('Favorito eliminado exitosamente');
+    });
+});
+//////////////////////////////////////////////
 app.get('/libros', (req, res) => {
     const query = 'SELECT * FROM Usuarios';
     db.query(query, (err, rows) => {
@@ -66,36 +186,7 @@ app.get('/destinos', (req, res) => {
     });
 });
 
-//creando apartado de create para un crud
-app.post('/usuarios/', (req, res) => {
-    const { titulo, autor, editorial, no_paginas, anio_publicacion, stock, estado } = req.body;
-    const query = 'INSERT INTO libros (titulo, autor, editorial, no_paginas, anio_publicacion, stock, estado) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [titulo, autor, editorial, no_paginas, anio_publicacion, stock, estado],
-        (error, results) => {
-            if (error) {
-                res.status(500).send('Error al ejecutar la consulta');
-                return;
-            } else {
-                res.status(200).json('Libro creado exitosamente');
-            }
-        }
-    );
-});
-//aramndo parte del delete
-app.delete('/libros/:id', (req, res) => {
-    const { id } = req.params;
-    const query = 'DELETE FROM libros WHERE id = ?';
-    db.query(query, [id], (error, results) => {
-        if (error) {
-            res.status(500).send('Error al eliminar el libro');
-            return;
-        } 
-        if (results.affectedRows === 0) {
-            res.status(404).send('Libro no encontrado');
-        } 
-            res.status(200).json('Libro eliminado exitosamente');
-    });
-});
+
 
 //actualizar un libro
 app.put('/libros/:id', (req, res) => {
